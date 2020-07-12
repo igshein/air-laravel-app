@@ -1,5 +1,11 @@
 # Laravel docker skeleton
 
+## Deploy
+1) make setup
+2) Set in .env file: DB_PASSWORD, USER_ADMIN_PASSWORD, CUSTOMER_DEFAULT_PASSWORD
+3) docker-compose build
+4) docker-compose up
+
 ## Clear all and start application from scratch
 
 This step is needed if you start application before.
@@ -38,43 +44,6 @@ make build
 # development
 make up
 
-```
-
-## Deploy
-0/ Git clone or git pull file project
-```bash
-git clone ...
-```
-
-1/ Setup ENV (Only when first deploy)
-```bash
-make setup
-```
-Edit .env, set password DB (DB_PASSWORD=) and user admin (USER_ADMIN_PASSWORD=)
-
-2/ Create build (Only when first deploy or update Dockerfile)
-```bash
-make build
-```
-
-3/ Set environment variables in file "/.env":
-```bash
-APP_ENV=production
-APP_DEBUG=false
-APP_LOG_LEVEL=error
-APP_URL=https://domain
-COOKIE_DOMAIN=.domain
-```
-
-4/ Container up
-```bash
-make up
-```
-
-5/ Check that migrations and seeds apply successfully.
-In case of errors, try this command:
-```bash
-docker-compose exec php php artisan migrate --seed
 ```
 
 ## Stop application
