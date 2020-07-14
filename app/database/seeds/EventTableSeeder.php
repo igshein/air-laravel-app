@@ -6,35 +6,56 @@ use Illuminate\Support\Facades\DB;
 class EventTableSeeder extends Seeder
 {
     private $tableEvent = 'event';
+    private $tableEventDateDay = 'event_date_day';
     private $tableEventDateMouth = 'event_date_mouth';
     private $tableEventDateYear = 'event_date_year';
 
     public function run()
     {
-//        $table->increments('event_id');
-//        $table->string('event_name');
-//        $table->timeStamp('event_date');
-
-        DB::table($this->tableEvent)->insert([
-            'event_name' => 'Event 1',
-            'event_date' => date('d H:i:s')
-        ]);
-
-        /*
-        $year = 2021;
-        for ($i = 1; $i < 11; $i++) {
-            if (empty(DB::table($this->tableEvent)->select()->where('blogger_name', "Blogger $i")->first())) {
-
-                DB::table($this->tableBlogger)->insert([
-                    'blogger_name' => "Blogger $i"
-                ]);
-                $lastInsertBlogerId = DB::getPdo()->lastInsertId();
-                DB::table($this->tableBloggerAvatar)->insert([
-                    'blogger_id' => $lastInsertBlogerId,
-                    'blogger_avatar_path' => '/storage/img/avatar/'.Hash::make("blogger_id:$i").'/default.jpg'
-                ]);
-            }
+        $i = 1;
+        if (empty(DB::table($this->tableEvent)->select()->where('event_name', "Event $i")->first())) {
+            DB::table($this->tableEvent)->insert([
+                'event_name' => "Event $i",
+                'event_time' => date('H:i:s')
+            ]);
+            $lastInsertEventId = DB::getPdo()->lastInsertId();
+            DB::table($this->tableEventDateDay)->insert([
+                'event_date_number_day' => 10,
+                'event_id' => $lastInsertEventId
+            ]);
+            $lastInsertDayId = DB::getPdo()->lastInsertId();
+            DB::table($this->tableEventDateMouth)->insert([
+                'event_date_number_mouth' => 7,
+                'event_date_day_id' => $lastInsertDayId
+            ]);
+            $lastInsertMouthId = DB::getPdo()->lastInsertId();
+            DB::table($this->tableEventDateYear)->insert([
+                'event_date_number_year' => 2020,
+                'event_date_mouth_id' => $lastInsertMouthId
+            ]);
         }
-        */
+
+        $i = 2;
+        if (empty(DB::table($this->tableEvent)->select()->where('event_name', "Event $i")->first())) {
+            DB::table($this->tableEvent)->insert([
+                'event_name' => "Event $i",
+                'event_time' => date('H:i:s')
+            ]);
+            $lastInsertEventId = DB::getPdo()->lastInsertId();
+            DB::table($this->tableEventDateDay)->insert([
+                'event_date_number_day' => 10,
+                'event_id' => $lastInsertEventId
+            ]);
+            $lastInsertDayId = DB::getPdo()->lastInsertId();
+            DB::table($this->tableEventDateMouth)->insert([
+                'event_date_number_mouth' => 7,
+                'event_date_day_id' => $lastInsertDayId
+            ]);
+            $lastInsertMouthId = DB::getPdo()->lastInsertId();
+            DB::table($this->tableEventDateYear)->insert([
+                'event_date_number_year' => 2020,
+                'event_date_mouth_id' => $lastInsertMouthId
+            ]);
+        }
     }
 }

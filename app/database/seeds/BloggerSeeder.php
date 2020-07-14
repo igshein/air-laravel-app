@@ -16,9 +16,9 @@ class BloggerSeeder extends Seeder
                 DB::table($this->tableBlogger)->insert([
                     'blogger_name' => "Blogger $i"
                 ]);
-                $lastInsertBlogerId = DB::getPdo()->lastInsertId();
+                $lastInsertBloggerId = DB::getPdo()->lastInsertId();
                 DB::table($this->tableBloggerAvatar)->insert([
-                    'blogger_id' => $lastInsertBlogerId,
+                    'blogger_id' => $lastInsertBloggerId,
                     'blogger_avatar_path' => '/storage/img/avatar/'.Hash::make("blogger_id:$i").'/default.jpg'
                 ]);
             }
