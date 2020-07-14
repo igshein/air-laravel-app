@@ -1,10 +1,4 @@
-# Laravel docker skeleton
-
-## Deploy
-1) make setup
-2) Set in .env file: DB_PASSWORD, USER_ADMIN_PASSWORD, CUSTOMER_DEFAULT_PASSWORD
-3) docker-compose build
-4) docker-compose up
+# Email queue
 
 ## Clear all and start application from scratch
 
@@ -46,6 +40,43 @@ make up
 
 ```
 
+## Deploy to production
+0/ Git clone or git pull file project
+```bash
+git clone ...
+```
+
+1/ Setup ENV (Only when first deploy)
+```bash
+make setup
+```
+Set in .env file: USER_ADMIN_PASSWORD, CUSTOMER_DEFAULT_PASSWORD, DB_PASSWORD
+
+2/ Create build (Only when first deploy or update Dockerfile)
+```bash
+make build
+```
+
+3/ Set environment variables in file "/.env":
+```bash
+APP_ENV=production
+APP_DEBUG=false
+APP_LOG_LEVEL=error
+APP_URL=https://domain
+COOKIE_DOMAIN=.domain
+```
+
+4/ Container up
+```bash
+make up
+```
+
+5/ Check that migrations and seeds apply successfully.
+In case of errors, try this command:
+```bash
+docker-compose exec php php artisan migrate --seed
+```
+
 ## Stop application
 ```bash
 
@@ -77,13 +108,18 @@ docker-compose exec php php artisan cache:clear
 docker-compose exec php php artisan config:cache
 docker-compose exec php php artisan view:clear
 
+# Add new seeder or migration
+docker-compose exec php php artisan make:seeder NameSeeder
+docker-compose exec php php artisan make:migration create_name_table
+docker-compose exec php php artisan make:model Models/NameDir/NameModel
+
 # Migrate + seed
 docker-compose exec php php artisan migrate --seed
 docker-compose exec php php artisan migrate:rollback --step=1
 
-# Add new migration
-docker-compose exec php php artisan make:migration create_name_table
-docker-compose exec php php artisan make:model Models/NameDir/NameModel
+# Jobs
+## for database ## docker-compose exec php php artisan queue:table
+docker-compose exec php php artisan make:job Email
 
 # Generate Tests
 docker-compose exec php php vendor/bin/codecept generate:cest api  NameDirectory/NameTestCets

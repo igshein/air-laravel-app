@@ -14,7 +14,7 @@ class CreateMouthTable extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->increments('mouth_id');
-            $table->string('mouth_name_ru')->unique();
+            $table->string('mouth_name_en')->unique();
         });
     }
 
