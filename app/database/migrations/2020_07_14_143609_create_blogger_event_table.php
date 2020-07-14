@@ -4,25 +4,28 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEventDateMouthTable extends Migration
+class CreateBloggerEventTable extends Migration
 {
-    protected $table = 'event_date_mouth';
+    protected $table = 'blogger_event';
     protected $primaryKey = false;
     protected $timestamps = false;
 
     public function up()
     {
         Schema::create($this->table, function (Blueprint $table) {
-            $table->increments('event_date_mouth_id');
-            $table->unsignedInteger('event_date_number_mouth');
+            $table->increments('blogger_event_id');
             $table->unsignedInteger('event_id');
+            $table->unsignedInteger('blogger_id');
+            $table->integer('blogger_event_order');
         });
 
         Schema::table($this->table, function (Blueprint $table) {
             $table->foreign('event_id')->references('event_id')->on('event')->onDelete('cascade');
             $table->index('event_id');
-
-            $table->index('event_date_number_mouth');
+        });
+        Schema::table($this->table, function (Blueprint $table) {
+            $table->foreign('blogger_id')->references('blogger_id')->on('blogger')->onDelete('cascade');
+            $table->index('blogger_id');
         });
     }
 
@@ -31,3 +34,5 @@ class CreateEventDateMouthTable extends Migration
         Schema::dropIfExists($this->table);
     }
 }
+
+

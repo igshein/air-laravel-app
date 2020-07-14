@@ -14,15 +14,15 @@ class CreateEventDateYearTable extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->increments('event_date_year_id');
+            $table->unsignedInteger('event_date_number_year');
             $table->unsignedInteger('event_date_mouth_id');
-            $table->unsignedInteger('year');
         });
 
         Schema::table($this->table, function (Blueprint $table) {
             $table->foreign('event_date_mouth_id')->references('event_date_mouth_id')->on('event_date_mouth')->onDelete('cascade');
             $table->index('event_date_mouth_id');
 
-            $table->index('year');
+            $table->index('event_date_number_year');
         });
     }
 
