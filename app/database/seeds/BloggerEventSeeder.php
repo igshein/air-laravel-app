@@ -17,6 +17,7 @@ class BloggerEventSeeder extends Seeder
             for ($i = 1; $i <= $this->countMaxRow; $i++) {
                 $blogger1 = DB::table($this->tableBlogger)->select('blogger_id')->where('blogger_name', "Blogger $i")->first();
                 $blogger2 = DB::table($this->tableBlogger)->select('blogger_id')->where('blogger_name', "Blogger ". (1 + $i))->first();
+                $blogger3 = DB::table($this->tableBlogger)->select('blogger_id')->where('blogger_name', "Blogger ". (2 + $i))->first();
                 $event = DB::table($this->tableEvent)->select('event_id')->where('event_name', "Event $i")->first();
                 DB::table($this->tableBloggerEvent)->insert([
                     'event_id' => $event->event_id,
@@ -26,7 +27,12 @@ class BloggerEventSeeder extends Seeder
                 DB::table($this->tableBloggerEvent)->insert([
                     'event_id' => $event->event_id,
                     'blogger_id' => $blogger2->blogger_id,
-                    'blogger_event_order' => $i
+                    'blogger_event_order' => $i + 1
+                ]);
+                DB::table($this->tableBloggerEvent)->insert([
+                    'event_id' => $event->event_id,
+                    'blogger_id' => $blogger3->blogger_id,
+                    'blogger_event_order' => $i + 2
                 ]);
             }
         }

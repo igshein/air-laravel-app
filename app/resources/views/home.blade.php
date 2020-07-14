@@ -40,11 +40,27 @@
                                         <li>{{ $days->event_date_number_day }}</li>
                                         @if (!empty($days->bloggerEvent))
                                         <ul>
-                                            @foreach($days->bloggerEvent as $bloggersEvents)
+                                            @foreach($days->bloggerEvent as $key => $bloggersEvents)
                                             <li style="border: 1px solid #999; margin-bottom: 5px;">
                                                 Event: {{ $bloggersEvents->event_name }}<br>
                                                 Blogger: {{ $bloggersEvents->blogger_name }}<br>
                                                 Order: {{ $bloggersEvents->blogger_event_order }}
+                                                @if ($key != 0 )
+                                                    <form style="display: inline" id="order-form" action="{{ route('blogger-event-reorder') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="event_id" value="{{ $bloggersEvents->event_id }}">
+                                                        <input type="hidden" name="blogger_id" value="{{ $bloggersEvents->blogger_id }}">
+                                                        <input type="hidden" name="vector" value="up">
+                                                        <button style="cursor: pointer" type="submit" value="Submit">&uarr;</button>
+                                                    </form>
+                                                @endif
+                                                @if ($key != (count($days->bloggerEvent) - 1) )
+                                                    <form style="display: inline" id="order-form" action="{{ route('blogger-event-reorder') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="vector" value="down">
+                                                        <button style="cursor: pointer" type="submit" value="Submit">&darr;</button>
+                                                    </form>
+                                                @endif
                                             </li>
                                             @endforeach
                                         </ul>

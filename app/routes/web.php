@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+## BloggerEvent
+Route::post('/blogger-event/reorder', 'BloggerEventController@reorder')->name('blogger-event-reorder');
+

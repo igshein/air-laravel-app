@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('App\Modules\Blogger\Interfaces\BloggerEventInterface', 'App\Modules\Blogger\Service\BloggerEventService');
     }
 
     /**

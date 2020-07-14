@@ -21,11 +21,9 @@ class CreateBloggerEventTable extends Migration
 
         Schema::table($this->table, function (Blueprint $table) {
             $table->foreign('event_id')->references('event_id')->on('event')->onDelete('cascade');
-            $table->index('event_id');
-        });
-        Schema::table($this->table, function (Blueprint $table) {
             $table->foreign('blogger_id')->references('blogger_id')->on('blogger')->onDelete('cascade');
-            $table->index('blogger_id');
+
+            $table->unique(['event_id', 'blogger_id'], 'composite_index');
         });
     }
 
