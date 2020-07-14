@@ -30,7 +30,7 @@ class EventTableSeeder extends Seeder
             ]);
             $lastInsertMouthId = DB::getPdo()->lastInsertId();
             DB::table($this->tableEventDateYear)->insert([
-                'event_date_number_year' => 2020,
+                'event_date_number_year' => (int)"202$i",
                 'event_date_mouth_id' => $lastInsertMouthId
             ]);
         }
@@ -53,7 +53,7 @@ class EventTableSeeder extends Seeder
             ]);
             $lastInsertMouthId = DB::getPdo()->lastInsertId();
             DB::table($this->tableEventDateYear)->insert([
-                'event_date_number_year' => 2020,
+                'event_date_number_year' => (int)"202$i",
                 'event_date_mouth_id' => $lastInsertMouthId
             ]);
         }
