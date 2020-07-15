@@ -50,7 +50,7 @@
                                                         @csrf
                                                         <input type="hidden" name="event_id" value="{{ $bloggersEvents->event_id }}">
                                                         <input type="hidden" name="blogger_id" value="{{ $bloggersEvents->blogger_id }}">
-                                                        <input type="hidden" name="vector" value="up">
+                                                        <input type="hidden" name="vector" value="-1">
                                                         <button style="cursor: pointer" type="submit" value="Submit">&uarr;</button>
                                                     </form>
                                                 @else
@@ -61,7 +61,7 @@
                                                         @csrf
                                                         <input type="hidden" name="event_id" value="{{ $bloggersEvents->event_id }}">
                                                         <input type="hidden" name="blogger_id" value="{{ $bloggersEvents->blogger_id }}">
-                                                        <input type="hidden" name="vector" value="down">
+                                                        <input type="hidden" name="vector" value="1">
                                                         <button style="cursor: pointer" type="submit" value="Submit">&darr;</button>
                                                     </form>
                                                 @else

@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Modules\Blogger\Interfaces\BloggerEventInterface;
 use Illuminate\Support\Facades\DB;
 
-
 class BloggerEventService implements BloggerEventInterface
 {
     public function reorder(Request $request): void
@@ -17,51 +16,50 @@ class BloggerEventService implements BloggerEventInterface
                     ->orderBy('blogger_event_order', 'asc')
                     ->get()
                     ->toArray();
-        if ($request->input('vector') === 'up') {
-            $reorderBloggersEvent = $this->reorderUp($bloggersEvent, $request->input('blogger_id'));
-        }
-        if ($request->input('vector') === 'down') {
-            $reorderBloggersEvent = $this->reorderDown($bloggersEvent, $request->input('blogger_id'));
-        }
-        // reordering
+        $vectorOrder = $this->getVector($request);
+        $this->checkSortOrder($bloggersEvent, $vectorOrder, $request->input('blogger_id'));
+        $reorderBloggersEvent = $this->reordering($bloggersEvent, $request->input('blogger_id'), $vectorOrder);
         $this->updateBloggersEvent($reorderBloggersEvent, $request->input('event_id'));
     }
 
-    private function reorderUp(array $bloggersEvent, int $bloggerId): array
+    private function checkSortOrder(array $bloggersEvent, int $vectorOrder, $bloggerId): void
     {
-        $num = -1;
-        $keyUpdate = null;
-        $reorderBloggersEvent = [];
-        foreach ($bloggersEvent as $key => $bloggerEvent) {
-            if ($bloggerEvent['blogger_id'] == $bloggerId) {
-                // $bloggerEvent['blogger_event_order']--;
-                $bloggerEvent['blogger_event_order'] = $bloggerEvent['blogger_event_order'] + $num;
-                $keyUpdate = $key + $num;
+        if ($vectorOrder === -1) {
+            if ($bloggersEvent[0]['blogger_id'] == $bloggerId) {
+                throw new \Exception('This order cannot be up.');
             }
-            $reorderBloggersEvent[] = $bloggerEvent;
         }
-        // $reorderBloggersEvent[$keyUpdate]['blogger_event_order']++;
-        $reorderBloggersEvent[$keyUpdate]['blogger_event_order'] = $reorderBloggersEvent[$keyUpdate]['blogger_event_order'] - $num;
-        return  $reorderBloggersEvent;
+        if ($vectorOrder === 1) {
+            $lastKey = count($bloggersEvent) - 1;
+            if ($bloggersEvent[$lastKey]['blogger_id'] == $bloggerId) {
+                throw new \Exception('This order cannot be down.');
+            }
+        }
     }
 
-    private function reorderDown(array $bloggersEvent, int $bloggerId): array
+    private function getVector(Request $request): int
     {
-        // dd($bloggersEvent);
-        $num = 1;
+        $vectorOrder = (int)$request->input('vector');
+        $validVectors = [1, -1];
+        if (!in_array($vectorOrder, $validVectors)) {
+            throw new \Exception('Value vectorOrder not valid');
+        }
+        return $vectorOrder;
+    }
+
+    private function reordering(array $bloggersEvent, int $bloggerId, int $vector): array
+    {
         $keyUpdate = null;
         $reorderBloggersEvent = [];
         foreach ($bloggersEvent as $key => $bloggerEvent) {
             if ($bloggerEvent['blogger_id'] == $bloggerId) {
-                // $bloggerEvent['blogger_event_order']++;
-                $bloggerEvent['blogger_event_order'] = $bloggerEvent['blogger_event_order'] + $num;
-                $keyUpdate = $key + $num;
+                $bloggerEvent['blogger_event_order'] = $bloggerEvent['blogger_event_order'] + $vector;
+                $keyUpdate = $key + $vector;
             }
             $reorderBloggersEvent[] = $bloggerEvent;
         }
-        //$reorderBloggersEvent[$keyUpdate]['blogger_event_order']--;
-        $reorderBloggersEvent[$keyUpdate]['blogger_event_order'] = $reorderBloggersEvent[$keyUpdate]['blogger_event_order'] - $num;
-        return  $reorderBloggersEvent;
+        $reorderBloggersEvent[$keyUpdate]['blogger_event_order'] = $reorderBloggersEvent[$keyUpdate]['blogger_event_order'] - $vector;
+        return $reorderBloggersEvent;
     }
 
     private function updateBloggersEvent(array $reorderBloggersEvent, int $eventId): void {
