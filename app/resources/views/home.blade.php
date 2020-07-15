@@ -53,13 +53,19 @@
                                                         <input type="hidden" name="vector" value="up">
                                                         <button style="cursor: pointer" type="submit" value="Submit">&uarr;</button>
                                                     </form>
+                                                @else
+                                                    <div style="display: inline-block; width: 24px;"></div>
                                                 @endif
                                                 @if ($key != (count($days->bloggerEvent) - 1) )
                                                     <form style="display: inline" id="order-form" action="{{ route('blogger-event-reorder') }}" method="POST">
                                                         @csrf
+                                                        <input type="hidden" name="event_id" value="{{ $bloggersEvents->event_id }}">
+                                                        <input type="hidden" name="blogger_id" value="{{ $bloggersEvents->blogger_id }}">
                                                         <input type="hidden" name="vector" value="down">
                                                         <button style="cursor: pointer" type="submit" value="Submit">&darr;</button>
                                                     </form>
+                                                @else
+                                                    <div style="display: inline-block; width: 24px;"></div>
                                                 @endif
                                             </li>
                                             @endforeach
